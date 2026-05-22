@@ -18,7 +18,7 @@ class EnrollmentController extends Controller
 
     public function index()
     {
-        $enrollments = Enrollment::with(['lead', 'course', 'enrolledBy'])->latest()->paginate(20);
+        $enrollments = Enrollment::with(['lead', 'enrolledBy'])->latest()->paginate(20);
         return $this->success($enrollments);
     }
 
@@ -26,7 +26,6 @@ class EnrollmentController extends Controller
     {
         $request->validate([
             'lead_id' => 'required|exists:leads,id',
-            'course_id' => 'required|exists:courses,id',
             'agreed_price' => 'required|numeric',
         ]);
 
@@ -36,7 +35,7 @@ class EnrollmentController extends Controller
 
     public function show(Enrollment $enrollment)
     {
-        return $this->success($enrollment->load(['lead', 'course', 'enrolledBy', 'payments']));
+        return $this->success($enrollment->load(['lead', 'enrolledBy', 'payments']));
     }
 
     public function update(Request $request, Enrollment $enrollment)

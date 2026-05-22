@@ -19,7 +19,7 @@ class DatabaseSeeder extends Seeder
             PermissionsSeeder::class ,
             RolesSeeder::class ,
             SuperAdminSeeder::class ,
-            CourseSeeder::class ,
+            DepartmentSeeder::class ,
             ExpenseCategorySeeder::class ,
             LeadSeeder::class ,
         ]);

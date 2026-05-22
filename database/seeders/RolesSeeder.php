@@ -31,6 +31,11 @@ class RolesSeeder extends Seeder
                 'description' => 'Finances and payments',
                 'permissions' => ['payments.view', 'payments.create', 'expenses.view', 'expenses.create', 'reports.view']
             ],
+            'employee' => [
+                'display_name' => 'Employee',
+                'description' => 'Standard employee access',
+                'permissions' => []
+            ],
         ];
 
         foreach ($roles as $name => $data) {

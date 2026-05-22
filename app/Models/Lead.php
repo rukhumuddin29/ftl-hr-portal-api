@@ -17,7 +17,7 @@ class Lead extends Model
         'degree_college', 'degree_year', 'degree_name', 'degree_specialization', 'degree_university', 'degree_percentage', 'degree_grade',
         'pg_college', 'pg_year', 'pg_name', 'pg_specialization', 'pg_university', 'pg_percentage', 'pg_grade',
         'current_company', 'current_designation', 'experience_years', 'current_skills',
-        'status', 'assigned_to', 'created_by', 'notes', 'follow_up_date', 'converted_at', 'interested_course_id'
+        'status', 'assigned_to', 'created_by', 'notes', 'follow_up_date', 'converted_at'
     ];
 
     protected $casts = [
@@ -48,11 +48,6 @@ class Lead extends Model
     public function enrollments()
     {
         return $this->hasMany(Enrollment::class);
-    }
-
-    public function interestedCourse()
-    {
-        return $this->belongsTo(Course::class , 'interested_course_id');
     }
 
     public function documents()

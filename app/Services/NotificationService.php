@@ -40,7 +40,7 @@ class NotificationService extends BaseService
      */
     public function notifyByPermission(string $permission, string $type, string $title, string $message, array $options = []): void
     {
-        $userIds = User::whereHas('permissions', fn($q) => $q->where('name', $permission))
+        $userIds = User::whereHas('directPermissions', fn($q) => $q->where('name', $permission)->where('user_permission.granted', true))
             ->orWhereHas('roles.permissions', fn($q) => $q->where('name', $permission))
             ->pluck('id')
             ->toArray();

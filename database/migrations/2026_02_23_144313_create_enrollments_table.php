@@ -15,11 +15,9 @@ return new class extends Migration
             $table->id();
             $table->string('enrollment_number', 50)->unique();
             $table->foreignId('lead_id')->constrained('leads')->onDelete('cascade');
-            $table->foreignId('course_id')->constrained('courses')->onDelete('cascade');
             $table->foreignId('enrolled_by')->constrained('users')->onDelete('cascade'); // BDE who closed it
             $table->foreignId('created_by')->constrained('users')->onDelete('cascade');
 
-            $table->decimal('course_price', 10, 2);
             $table->decimal('agreed_price', 10, 2);
             $table->decimal('discount_amount', 10, 2)->default(0);
             $table->string('discount_reason')->nullable();

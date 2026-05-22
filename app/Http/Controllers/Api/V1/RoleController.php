@@ -60,10 +60,10 @@ class RoleController extends Controller
         }
 
         $validated = $request->validate([
-            'permissions' => 'required|array',
+            'permissions' => 'nullable|array',
         ]);
 
-        $role->permissions()->sync($validated['permissions']);
+        $role->permissions()->sync($request->input('permissions', []));
 
         return response()->json(['message' => 'Permissions updated successfully']);
     }

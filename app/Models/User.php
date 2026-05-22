@@ -25,7 +25,7 @@ class User extends Authenticatable
         'email',
         'phone',
         'employee_id',
-        'department',
+        'department_id',
         'designation',
         'salary',
         'status',
@@ -55,6 +55,11 @@ class User extends Authenticatable
             'password' => 'hashed',
             'salary' => 'decimal:2',
         ];
+    }
+
+    public function department()
+    {
+        return $this->belongsTo(Department::class);
     }
 
     public function salaryStructure()

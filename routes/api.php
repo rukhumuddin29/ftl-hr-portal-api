@@ -5,7 +5,6 @@ use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\Api\V1\AuthController;
 use App\Http\Controllers\Api\V1\LeadController;
-use App\Http\Controllers\Api\V1\CourseController;
 use App\Http\Controllers\Api\V1\EnrollmentController;
 use App\Http\Controllers\Api\V1\PaymentController;
 use App\Http\Controllers\Api\V1\ExpenseController;
@@ -14,6 +13,7 @@ use App\Http\Controllers\Api\V1\UserController;
 use App\Http\Controllers\Api\V1\WorkdayController;
 use App\Http\Controllers\Api\V1\CompanyController;
 use App\Http\Controllers\Api\V1\ReportController;
+use App\Http\Controllers\Api\V1\DepartmentController;
 use App\Http\Controllers\Api\V1\ForgotPasswordController;
 use App\Http\Controllers\Api\V1\RoleController;
 use App\Http\Controllers\Api\V1\PermissionController;
@@ -27,8 +27,6 @@ use App\Http\Controllers\Api\V1\LeaveController;
 use App\Http\Controllers\Api\V1\BdeScorecardController;
 use App\Http\Controllers\Api\V1\NotificationController;
 use App\Http\Controllers\Api\V1\LeadDocumentController;
-use App\Http\Controllers\Api\V1\HiringCompanyController;
-use App\Http\Controllers\Api\V1\PlacementController;
 
 Route::group(['prefix' => 'v1'], function () {
 
@@ -92,26 +90,10 @@ Route::group(['prefix' => 'v1'], function () {
                 Route::get('documents/{document}/download', [LeadDocumentController::class , 'download'])->middleware('permission:leads.view,leads.view_assigned');
                 Route::delete('documents/{document}', [LeadDocumentController::class , 'destroy'])->middleware('permission:leads.update');
 
-                // Courses
-                Route::apiResource('courses', CourseController::class);
-
                 // Enrollments
                 Route::apiResource('enrollments', EnrollmentController::class)
                     ->except(['destroy'])
                     ->middleware(['index' => 'permission:enrollments.view', 'show' => 'permission:enrollments.view', 'store' => 'permission:enrollments.create', 'update' => 'permission:enrollments.create']);
-
-                // Hiring Companies
-                Route::apiResource('hiring-companies', HiringCompanyController::class);
-
-                // Placement & Career Tracking
-                Route::group(['prefix' => 'placements'], function () {
-                    Route::get('report', [PlacementController::class , 'report']);
-                    Route::post('{enrollment}/mock', [PlacementController::class , 'storeMock']);
-                    Route::post('{enrollment}/interview', [PlacementController::class , 'storeInterview']);
-                    Route::post('{enrollment}/success', [PlacementController::class , 'storePlacement']);
-                    Route::patch('{enrollment}/status', [PlacementController::class , 'updateStatus']);
-                }
-                );
 
                 // Payments
                 Route::apiResource('payments', PaymentController::class)
@@ -187,7 +169,6 @@ Route::group(['prefix' => 'v1'], function () {
                 // Reports
                 Route::group(['prefix' => 'reports'], function () {
                     Route::get('financial-summary', [ReportController::class , 'financialSummary'])->middleware('permission:reports.view');
-                    Route::get('revenue-by-course', [ReportController::class , 'revenueByCourse'])->middleware('permission:reports.view');
                     Route::get('revenue-by-bde', [ReportController::class , 'revenueByBde'])->middleware('permission:reports.view');
                     Route::get('export', [ReportController::class , 'export'])->middleware('permission:reports.view');
                 }
@@ -222,6 +203,9 @@ Route::group(['prefix' => 'v1'], function () {
                 Route::apiResource('users', UserController::class)->middleware('permission:users.view');
                 Route::apiResource('roles', RoleController::class)->middleware('permission:roles.view');
                 Route::apiResource('permissions', PermissionController::class)->middleware('permission:roles.view');
+                Route::apiResource('departments', DepartmentController::class)
+                    ->except(['show'])
+                    ->middleware(['index' => 'permission:departments.view', 'store' => 'permission:departments.manage', 'update' => 'permission:departments.manage', 'destroy' => 'permission:departments.manage']);
             }
             );
         });

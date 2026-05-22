@@ -25,32 +25,7 @@ class ReportController extends Controller
         return $this->success($data);
     }
 
-    /**
-     * Get revenue grouped by course
-     */
-    public function revenueByCourse(Request $request)
-    {
-        $year = $request->input('year', now()->year);
 
-        $data = Payment::join('enrollments', 'payments.enrollment_id', '=', 'enrollments.id')
-            ->join('courses', 'enrollments.course_id', '=', 'courses.id')
-            ->whereYear('payments.payment_date', $year)
-            ->whereNull('payments.deleted_at')
-            ->selectRaw('courses.name as course_name, courses.code as course_code, 
-                          SUM(payments.amount) as revenue, 
-                          COUNT(DISTINCT enrollments.id) as enrollments')
-            ->groupBy('courses.id', 'courses.name', 'courses.code')
-            ->orderByDesc('revenue')
-            ->get();
-
-        $totalRevenue = $data->sum('revenue');
-        $data->transform(function ($item) use ($totalRevenue) {
-            $item->percentage = $totalRevenue > 0 ? round(($item->revenue / $totalRevenue) * 100, 1) : 0;
-            return $item;
-        });
-
-        return $this->success($data);
-    }
 
     /**
      * Get revenue grouped by BDE

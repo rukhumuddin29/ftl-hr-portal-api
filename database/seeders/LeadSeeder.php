@@ -192,13 +192,8 @@ class LeadSeeder extends Seeder
             ],
         ];
 
-        $courses = \App\Models\Course::pluck('id')->toArray();
-
         foreach (array_merge($studentLeads, $professionalLeads) as $leadData) {
             $leadData['created_by'] = $adminId;
-            if (!empty($courses)) {
-                $leadData['interested_course_id'] = $courses[array_rand($courses)];
-            }
             Lead::create($leadData);
         }
     }

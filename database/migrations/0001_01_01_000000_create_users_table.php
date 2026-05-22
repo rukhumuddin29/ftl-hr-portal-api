@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('email')->unique();
             $table->string('phone', 20)->nullable();
             $table->string('employee_id', 50)->nullable()->unique();
-            $table->string('department', 100)->nullable();
+            $table->foreignId('department_id')->nullable()->constrained('departments')->nullOnDelete();
             $table->string('designation', 100)->nullable();
             $table->decimal('salary', 10, 2)->default(0);
             $table->enum('status', ['active', 'inactive', 'on_leave'])->default('active');

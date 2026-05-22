@@ -14,7 +14,6 @@ class Enrollment extends Model
     protected $fillable = [
         'enrollment_number',
         'lead_id',
-        'course_id',
         'agreed_price',
         'start_date',
         'status',
@@ -41,11 +40,6 @@ class Enrollment extends Model
         return $this->belongsTo(Lead::class);
     }
 
-    public function course()
-    {
-        return $this->belongsTo(Course::class);
-    }
-
     public function enrolledBy()
     {
         return $this->belongsTo(User::class , 'enrolled_by');
@@ -54,20 +48,5 @@ class Enrollment extends Model
     public function payments()
     {
         return $this->hasMany(Payment::class);
-    }
-
-    public function mockInterviews()
-    {
-        return $this->hasMany(MockInterview::class);
-    }
-
-    public function studentInterviews()
-    {
-        return $this->hasMany(StudentInterview::class);
-    }
-
-    public function placement()
-    {
-        return $this->hasOne(Placement::class);
     }
 }

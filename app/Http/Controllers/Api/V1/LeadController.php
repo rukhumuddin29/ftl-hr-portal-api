@@ -71,7 +71,7 @@ class LeadController extends Controller
             }
         }
 
-        return $this->success($lead->load(['assignedTo', 'createdBy', 'callLogs.calledByUser', 'interestedCourse']));
+        return $this->success($lead->load(['assignedTo', 'createdBy', 'callLogs.calledByUser']));
     }
 
     public function update(Request $request, Lead $lead)
@@ -245,7 +245,7 @@ class LeadController extends Controller
         $user = $request->user();
         $isBde = $user->hasRole('bde') && !$user->hasAnyRole(['admin', 'super_admin']);
 
-        $query = Lead::query()->with(['assignedTo', 'interestedCourse']);
+        $query = Lead::query()->with(['assignedTo']);
 
         // Role scoping
         if ($isBde) {
@@ -255,9 +255,6 @@ class LeadController extends Controller
         // Filters
         if ($request->filled('assigned_to')) {
             $query->where('assigned_to', $request->assigned_to);
-        }
-        if ($request->filled('interested_course_id')) {
-            $query->where('interested_course_id', $request->interested_course_id);
         }
         if ($request->filled('date_from')) {
             $query->whereDate('created_at', '>=', $request->date_from);
@@ -338,7 +335,7 @@ class LeadController extends Controller
             );
         }
 
-        return $this->success($lead->load(['assignedTo', 'interestedCourse']), 'Status updated');
+        return $this->success($lead->load(['assignedTo']), 'Status updated');
     }
 
     public function checkDuplicates(Request $request)
@@ -390,7 +387,7 @@ class LeadController extends Controller
             $groups[] = [
                 'field' => 'phone',
                 'value' => $dupe->phone,
-                'leads' => $leads->load(['assignedTo', 'interestedCourse']),
+                'leads' => $leads->load(['assignedTo']),
                 'score' => 100 
             ];
         }
@@ -408,7 +405,7 @@ class LeadController extends Controller
             $groups[] = [
                 'field' => 'email',
                 'value' => $dupe->email,
-                'leads' => $leads->load(['assignedTo', 'interestedCourse']),
+                'leads' => $leads->load(['assignedTo']),
                 'score' => 100
             ];
         }

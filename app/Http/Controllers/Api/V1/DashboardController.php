@@ -62,14 +62,14 @@ class DashboardController extends Controller
             ];
         }
 
-        $recentLeads = (clone $leadQuery)->with('interestedCourse')
+        $recentLeads = (clone $leadQuery)
             ->latest()
             ->take(5)
             ->get();
 
         $recentPayments = [];
         if ($isAdmin) {
-            $recentPayments = Payment::with(['enrollment.lead', 'enrollment.course'])
+            $recentPayments = Payment::with(['enrollment.lead'])
                 ->latest()
                 ->take(5)
                 ->get();
@@ -146,20 +146,20 @@ class DashboardController extends Controller
 
         // Overdue
         $overdue = (clone $query)->whereDate('follow_up_date', '<', $today)
-            ->with(['assignedTo', 'interestedCourse'])
+            ->with(['assignedTo'])
             ->orderBy('follow_up_date', 'asc')
             ->take(20)->get();
 
         // Today
         $todayLeads = (clone $query)->whereDate('follow_up_date', $today)
-            ->with(['assignedTo', 'interestedCourse'])
+            ->with(['assignedTo'])
             ->orderBy('follow_up_date', 'asc')
             ->get();
 
         // Upcoming (next 7 days)
         $upcoming = (clone $query)->whereDate('follow_up_date', '>', $today)
             ->whereDate('follow_up_date', '<=', $today->copy()->addDays(7))
-            ->with(['assignedTo', 'interestedCourse'])
+            ->with(['assignedTo'])
             ->orderBy('follow_up_date', 'asc')
             ->take(20)->get();
 
@@ -183,7 +183,7 @@ class DashboardController extends Controller
 
         $query = Lead::query()
             ->whereIn('status', ['interested', 'thinking', 'demo_scheduled'])
-            ->with(['assignedTo', 'interestedCourse']);
+            ->with(['assignedTo']);
 
         if ($isBde && !$isAdmin) {
             $query->where('assigned_to', $user->id);

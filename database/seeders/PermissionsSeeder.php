@@ -20,6 +20,9 @@ class PermissionsSeeder extends Seeder
             ['module' => 'roles', 'name' => 'roles.update', 'display_name' => 'Update Roles'],
             ['module' => 'roles', 'name' => 'roles.delete', 'display_name' => 'Delete Roles'],
 
+            ['module' => 'departments', 'name' => 'departments.view', 'display_name' => 'View Departments'],
+            ['module' => 'departments', 'name' => 'departments.manage', 'display_name' => 'Manage Departments'],
+
             ['module' => 'leads', 'name' => 'leads.view', 'display_name' => 'View All Leads'],
             ['module' => 'leads', 'name' => 'leads.view_assigned', 'display_name' => 'View Assigned Leads'],
             ['module' => 'leads', 'name' => 'leads.create', 'display_name' => 'Create Leads'],

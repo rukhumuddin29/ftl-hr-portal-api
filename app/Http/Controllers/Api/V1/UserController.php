@@ -44,6 +44,8 @@ class UserController extends Controller
             'email' => 'required|email|unique:users,email',
             'password' => 'required|string|min:8',
             'role_id' => 'required|exists:roles,id',
+            'department_id' => 'nullable|exists:departments,id',
+            'designation' => 'nullable|string|max:100',
         ]);
 
         // Auto-generate employee_id if not provided
@@ -64,6 +66,8 @@ class UserController extends Controller
             'employee_id' => $employeeId,
             'password' => bcrypt($validated['password']),
             'status' => 'active',
+            'department_id' => $validated['department_id'] ?? null,
+            'designation' => $validated['designation'] ?? null,
         ]);
 
         $user->roles()->attach($validated['role_id']);
@@ -76,7 +80,7 @@ class UserController extends Controller
         $validated = $request->validate([
             'name' => 'required|string|max:255',
             'email' => 'required|email|unique:users,email,' . $user->id,
-            'department' => 'nullable|string|max:100',
+            'department_id' => 'nullable|exists:departments,id',
             'designation' => 'nullable|string|max:100',
             'role_id' => 'required|exists:roles,id',
             'password' => 'nullable|string|min:8',
@@ -85,8 +89,8 @@ class UserController extends Controller
 
         $user->name = $validated['name'];
         $user->email = $validated['email'];
-        $user->department = $validated['department'];
-        $user->designation = $validated['designation'];
+        $user->department_id = $validated['department_id'] ?? null;
+        $user->designation = $validated['designation'] ?? null;
         $user->status = $validated['status'];
 
         if (!empty($validated['password'])) {

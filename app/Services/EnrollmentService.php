@@ -4,7 +4,6 @@ namespace App\Services;
 
 use App\Models\Enrollment;
 use App\Models\Lead;
-use App\Models\Course;
 use Carbon\Carbon;
 
 class EnrollmentService extends BaseService
@@ -19,11 +18,9 @@ class EnrollmentService extends BaseService
     public function create(array $data, int $userId)
     {
         return $this->transactional(function () use ($data, $userId) {
-            $course = Course::findOrFail($data['course_id']);
             $lead = Lead::findOrFail($data['lead_id']);
 
             $enrollment = Enrollment::create(array_merge($data, [
-                'course_price' => $course->offer_price,
                 'created_by' => $userId,
                 'enrolled_by' => $data['enrolled_by'] ?? $userId,
                 'status' => 'active',
