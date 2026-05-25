@@ -5,8 +5,8 @@ use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\Api\V1\AuthController;
 use App\Http\Controllers\Api\V1\LeadController;
-use App\Http\Controllers\Api\V1\EnrollmentController;
-use App\Http\Controllers\Api\V1\PaymentController;
+use App\Http\Controllers\Api\V1\LeadTypeController;
+
 use App\Http\Controllers\Api\V1\ExpenseController;
 use App\Http\Controllers\Api\V1\DashboardController;
 use App\Http\Controllers\Api\V1\UserController;
@@ -26,7 +26,6 @@ use App\Http\Controllers\Api\V1\ActivityLogController;
 use App\Http\Controllers\Api\V1\LeaveController;
 use App\Http\Controllers\Api\V1\BdeScorecardController;
 use App\Http\Controllers\Api\V1\NotificationController;
-use App\Http\Controllers\Api\V1\LeadDocumentController;
 
 Route::group(['prefix' => 'v1'], function () {
 
@@ -69,6 +68,7 @@ Route::group(['prefix' => 'v1'], function () {
                     Route::get('pipeline', [LeadController::class , 'pipeline'])->middleware('permission:leads.view,leads.view_assigned');
                     Route::post('bulk-assign', [LeadController::class , 'bulkAssign'])->middleware('permission:leads.assign');
                     Route::post('bulk-import', [LeadController::class , 'bulkImport'])->middleware('permission:leads.create');
+                    Route::apiResource('lead-types', LeadTypeController::class);
                     Route::post('check-duplicates', [LeadController::class , 'checkDuplicates'])->middleware('permission:leads.create,leads.view');
                     Route::post('merge', [LeadController::class , 'mergeLeads'])->middleware('permission:leads.update_all');
                     Route::get('duplicates', [LeadController::class , 'duplicates'])->middleware('permission:leads.view');
@@ -81,24 +81,11 @@ Route::group(['prefix' => 'v1'], function () {
                     Route::patch('{lead}/complete', [LeadController::class , 'completeFollowUp'])->middleware('permission:leads.update');
                     Route::patch('{lead}/status', [LeadController::class , 'updateStatus'])->middleware('permission:leads.update');
 
-                    // Documents
-                    Route::get('{lead}/documents', [LeadDocumentController::class , 'index'])->middleware('permission:leads.view,leads.view_assigned');
-                    Route::post('{lead}/documents', [LeadDocumentController::class , 'store'])->middleware('permission:leads.update');
+
                 }
                 );
 
-                Route::get('documents/{document}/download', [LeadDocumentController::class , 'download'])->middleware('permission:leads.view,leads.view_assigned');
-                Route::delete('documents/{document}', [LeadDocumentController::class , 'destroy'])->middleware('permission:leads.update');
 
-                // Enrollments
-                Route::apiResource('enrollments', EnrollmentController::class)
-                    ->except(['destroy'])
-                    ->middleware(['index' => 'permission:enrollments.view', 'show' => 'permission:enrollments.view', 'store' => 'permission:enrollments.create', 'update' => 'permission:enrollments.create']);
-
-                // Payments
-                Route::apiResource('payments', PaymentController::class)
-                    ->only(['index', 'store', 'show'])
-                    ->middleware(['index' => 'permission:payments.view', 'show' => 'permission:payments.view', 'store' => 'permission:payments.create']);
 
                 // Expenses
                 Route::get('expense-categories', [ExpenseController::class , 'categories']);

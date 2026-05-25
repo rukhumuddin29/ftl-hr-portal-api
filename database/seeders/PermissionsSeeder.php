@@ -31,11 +31,7 @@ class PermissionsSeeder extends Seeder
             ['module' => 'leads', 'name' => 'leads.bulk_email', 'display_name' => 'Send Bulk Emails'],
             ['module' => 'leads', 'name' => 'leads.bulk_email_history', 'display_name' => 'View Bulk Email History'],
 
-            ['module' => 'enrollments', 'name' => 'enrollments.view', 'display_name' => 'View Enrollments'],
-            ['module' => 'enrollments', 'name' => 'enrollments.create', 'display_name' => 'Create Enrollments'],
 
-            ['module' => 'payments', 'name' => 'payments.view', 'display_name' => 'View Payments'],
-            ['module' => 'payments', 'name' => 'payments.create', 'display_name' => 'Record Payments'],
 
             ['module' => 'expenses', 'name' => 'expenses.view', 'display_name' => 'View Expenses'],
             ['module' => 'expenses', 'name' => 'expenses.create', 'display_name' => 'Create Expenses'],

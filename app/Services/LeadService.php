@@ -28,8 +28,7 @@ class LeadService extends BaseService
                     ->orWhere('phone', 'like', "%{$search}%");
             });
         }
-
-        return $query->with(['assignedTo', 'createdBy', 'interestedCourse'])->latest()->paginate(20);
+        return $query->with(['assignedTo', 'createdBy', 'leadType'])->latest()->paginate(20);
     }
 
     public function create(array $data, int $userId)
@@ -91,7 +90,7 @@ class LeadService extends BaseService
         });
     }
 
-    public function getUnassignedCounts(?string $status = null, ?string $leadType = null)
+    public function getUnassignedCounts(?string $status = null, ?int $leadTypeId = null)
     {
         $query = Lead::whereNull('assigned_to');
 
@@ -99,26 +98,26 @@ class LeadService extends BaseService
             $query->where('status', $status);
         }
 
-        if ($leadType) {
-            $query->where('lead_type', $leadType);
+        if ($leadTypeId) {
+            $query->where('lead_type_id', $leadTypeId);
         }
 
         return $query->count();
     }
 
-    public function bulkAssign(int $employeeId, int $count, ?string $status = null, ?string $leadType = null)
+    public function bulkAssign(int $employeeId, int $count, ?string $status = null, ?int $leadTypeId = null)
     {
-        return $this->transactional(function () use ($employeeId, $count, $status, $leadType) {
+        return $this->transactional(function () use ($employeeId, $count, $status, $leadTypeId) {
             $query = Lead::whereNull('assigned_to');
 
             if ($status) {
                 $query->where('status', $status);
             }
-            if ($leadType) {
-                $query->where('lead_type', $leadType);
+            if ($leadTypeId) {
+                $query->where('lead_type_id', $leadTypeId);
             }
 
-            if (!$status && !$leadType) {
+            if (!$status && !$leadTypeId) {
                 $query->where('status', 'new');
             }
 

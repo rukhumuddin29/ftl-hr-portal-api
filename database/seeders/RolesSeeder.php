@@ -19,17 +19,17 @@ class RolesSeeder extends Seeder
             'admin' => [
                 'display_name' => 'Administrator',
                 'description' => 'Most managerial functions',
-                'permissions' => ['users.view', 'roles.view', 'leads.view', 'enrollments.view', 'payments.view', 'expenses.view', 'reports.view', 'leads.bulk_email', 'leads.bulk_email_history', 'payroll.manage', 'payroll.view', 'payroll.generate', 'payroll.approve', 'attendance.view', 'attendance.mark']
+                'permissions' => ['users.view', 'roles.view', 'leads.view', 'expenses.view', 'reports.view', 'leads.bulk_email', 'leads.bulk_email_history', 'payroll.manage', 'payroll.view', 'payroll.generate', 'payroll.approve', 'attendance.view', 'attendance.mark']
             ],
             'bde' => [
                 'display_name' => 'Business Development Executive',
                 'description' => 'Lead management and sales',
-                'permissions' => ['leads.view_assigned', 'leads.create', 'leads.update', 'enrollments.create', 'leads.bulk_email', 'leads.bulk_email_history']
+                'permissions' => ['leads.view_assigned', 'leads.create', 'leads.update', 'leads.bulk_email', 'leads.bulk_email_history']
             ],
             'accounts' => [
                 'display_name' => 'Accounts Manager',
                 'description' => 'Finances and payments',
-                'permissions' => ['payments.view', 'payments.create', 'expenses.view', 'expenses.create', 'reports.view']
+                'permissions' => ['expenses.view', 'expenses.create', 'reports.view']
             ],
             'employee' => [
                 'display_name' => 'Employee',

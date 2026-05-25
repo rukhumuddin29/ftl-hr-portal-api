@@ -41,7 +41,8 @@ class LeadController extends Controller
             'name' => 'required|string|max:150',
             'phone' => 'required|string|max:20',
             'email' => 'nullable|email|max:150',
-            'lead_type' => 'nullable|string|in:student,professional,other',
+            'lead_type_id' => 'required|exists:lead_types,id',
+            'custom_data' => 'nullable|array',
         ]);
 
         $dupeService = app(\App\Services\DuplicateDetectionService::class);
@@ -164,8 +165,8 @@ class LeadController extends Controller
     public function unassignedCounts(Request $request)
     {
         $status = $request->query('status');
-        $leadType = $request->query('lead_type');
-        $count = $this->leadService->getUnassignedCounts($status, $leadType);
+        $leadTypeId = $request->query('lead_type_id');
+        $count = $this->leadService->getUnassignedCounts($status, $leadTypeId);
         return $this->success(['count' => $count]);
     }
 
@@ -175,14 +176,14 @@ class LeadController extends Controller
             'employee_id' => 'required|exists:users,id',
             'count' => 'required|integer|min:1',
             'status' => 'nullable|string',
-            'lead_type' => 'nullable|string|in:student,professional,other'
+            'lead_type_id' => 'nullable|exists:lead_types,id'
         ]);
 
         $count = $this->leadService->bulkAssign(
             $validated['employee_id'],
             $validated['count'],
             $validated['status'] ?? null,
-            $validated['lead_type'] ?? null
+            $validated['lead_type_id'] ?? null
         );
 
         $this->logActivity('lead.bulk_assigned', null, [], ['assigned_to' => $validated['employee_id'], 'count' => $count, 'filters' => $validated]);

@@ -4,8 +4,7 @@ namespace App\Http\Controllers\Api\V1;
 
 use App\Http\Controllers\Controller;
 use App\Models\Lead;
-use App\Models\Enrollment;
-use App\Models\Payment;
+
 use App\Models\Expense;
 use App\Models\PayrollRun;
 use App\Models\User;
@@ -37,8 +36,7 @@ class DashboardController extends Controller
         ];
 
         if ($isAdmin) {
-            $stats['total_enrollments'] = Enrollment::count();
-            $stats['revenue_this_month'] = Payment::whereDate('payment_date', '>=', $monthStart)->sum('amount');
+
             $stats['expenses_this_month'] = Expense::where('status', 'approved')
                 ->whereDate('expense_date', '>=', $monthStart)
                 ->sum('amount');
@@ -67,19 +65,20 @@ class DashboardController extends Controller
             ->take(5)
             ->get();
 
-        $recentPayments = [];
-        if ($isAdmin) {
-            $recentPayments = Payment::with(['enrollment.lead'])
-                ->latest()
-                ->take(5)
-                ->get();
+
+        $roleToReturn = 'other';
+        if ($user->hasRole('super_admin')) {
+            $roleToReturn = 'super_admin';
+        } elseif ($user->hasRole('admin')) {
+            $roleToReturn = 'admin';
+        } elseif ($isBde) {
+            $roleToReturn = 'bde';
         }
 
         return $this->success([
             'stats' => $stats,
             'recent_leads' => $recentLeads,
-            'recent_payments' => $recentPayments,
-            'user_role' => $isAdmin ? 'admin' : ($isBde ? 'bde' : 'other')
+            'user_role' => $roleToReturn
         ]);
     }
 
