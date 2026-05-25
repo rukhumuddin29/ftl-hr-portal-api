@@ -28,11 +28,10 @@ class PermissionsSeeder extends Seeder
             ['module' => 'leads', 'name' => 'leads.create', 'display_name' => 'Create Leads'],
             ['module' => 'leads', 'name' => 'leads.update', 'display_name' => 'Update Leads'],
             ['module' => 'leads', 'name' => 'leads.assign', 'display_name' => 'Assign Leads'],
-            ['module' => 'leads', 'name' => 'leads.bulk_email', 'display_name' => 'Send Bulk Emails'],
-            ['module' => 'leads', 'name' => 'leads.bulk_email_history', 'display_name' => 'View Bulk Email History'],
+            ['module' => 'leads', 'name' => 'leads.update_all', 'display_name' => 'Update All Leads (Merge)'],
 
-
-
+            ['module' => 'leaves', 'name' => 'leaves.view', 'display_name' => 'View All Leaves'],
+            ['module' => 'leaves', 'name' => 'leaves.approve', 'display_name' => 'Approve Leaves'],
             ['module' => 'expenses', 'name' => 'expenses.view', 'display_name' => 'View Expenses'],
             ['module' => 'expenses', 'name' => 'expenses.create', 'display_name' => 'Create Expenses'],
             ['module' => 'expenses', 'name' => 'expenses.approve', 'display_name' => 'Approve Expenses'],

@@ -22,6 +22,7 @@ class DatabaseSeeder extends Seeder
             DepartmentSeeder::class ,
             ExpenseCategorySeeder::class ,
             LeadSeeder::class ,
+            WhatsappTemplateSeeder::class ,
         ]);
 
     }

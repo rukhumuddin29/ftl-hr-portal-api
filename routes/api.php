@@ -12,12 +12,10 @@ use App\Http\Controllers\Api\V1\DashboardController;
 use App\Http\Controllers\Api\V1\UserController;
 use App\Http\Controllers\Api\V1\WorkdayController;
 use App\Http\Controllers\Api\V1\CompanyController;
-use App\Http\Controllers\Api\V1\ReportController;
 use App\Http\Controllers\Api\V1\DepartmentController;
 use App\Http\Controllers\Api\V1\ForgotPasswordController;
 use App\Http\Controllers\Api\V1\RoleController;
 use App\Http\Controllers\Api\V1\PermissionController;
-use App\Http\Controllers\Api\V1\BulkEmailController;
 use App\Http\Controllers\Api\V1\SalaryStructureController;
 use App\Http\Controllers\Api\V1\AttendanceSystemController;
 use App\Http\Controllers\Api\V1\PayrollController;
@@ -26,6 +24,7 @@ use App\Http\Controllers\Api\V1\ActivityLogController;
 use App\Http\Controllers\Api\V1\LeaveController;
 use App\Http\Controllers\Api\V1\BdeScorecardController;
 use App\Http\Controllers\Api\V1\NotificationController;
+use App\Http\Controllers\Api\V1\WhatsappTemplateController;
 
 Route::group(['prefix' => 'v1'], function () {
 
@@ -69,6 +68,7 @@ Route::group(['prefix' => 'v1'], function () {
                     Route::post('bulk-assign', [LeadController::class , 'bulkAssign'])->middleware('permission:leads.assign');
                     Route::post('bulk-import', [LeadController::class , 'bulkImport'])->middleware('permission:leads.create');
                     Route::apiResource('lead-types', LeadTypeController::class);
+                    Route::apiResource('whatsapp-templates', WhatsappTemplateController::class);
                     Route::post('check-duplicates', [LeadController::class , 'checkDuplicates'])->middleware('permission:leads.create,leads.view');
                     Route::post('merge', [LeadController::class , 'mergeLeads'])->middleware('permission:leads.update_all');
                     Route::get('duplicates', [LeadController::class , 'duplicates'])->middleware('permission:leads.view');
@@ -92,13 +92,7 @@ Route::group(['prefix' => 'v1'], function () {
                 Route::apiResource('expenses', ExpenseController::class);
                 Route::post('expenses/{expense}/approve', [ExpenseController::class , 'approve'])->middleware('permission:expenses.approve');
 
-                // Bulk Emails
-                Route::group(['prefix' => 'bulk-emails'], function () {
-                    Route::get('/', [BulkEmailController::class , 'index'])->middleware('permission:leads.bulk_email_history');
-                    Route::get('counts', [BulkEmailController::class , 'getCounts'])->middleware('permission:leads.bulk_email');
-                    Route::post('send', [BulkEmailController::class , 'send'])->middleware('permission:leads.bulk_email');
-                }
-                );
+
 
                 // Salary Structures
                 Route::group(['prefix' => 'salary-structures', 'middleware' => 'permission:payroll.manage'], function () {
@@ -153,13 +147,7 @@ Route::group(['prefix' => 'v1'], function () {
                 }
                 );
 
-                // Reports
-                Route::group(['prefix' => 'reports'], function () {
-                    Route::get('financial-summary', [ReportController::class , 'financialSummary'])->middleware('permission:reports.view');
-                    Route::get('revenue-by-bde', [ReportController::class , 'revenueByBde'])->middleware('permission:reports.view');
-                    Route::get('export', [ReportController::class , 'export'])->middleware('permission:reports.view');
-                }
-                );
+
 
                 // Leave Management
                 Route::group(['prefix' => 'leaves'], function () {
